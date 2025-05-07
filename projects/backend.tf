@@ -4,20 +4,28 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.97.0"
+      version = "> 3.0"
     }
     random = {
       source  = "hashicorp/random"
       version = ">= 3.0"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = ">= 3.0"
-    }
+#    null = {
+#      source  = "hashicorp/null"
+#      version = ">= 3.0"
+#    }
+  }
+  backend "s3" {
+    bucket         = "awslab-s3-arunbw"
+    key            = "env/dev/main.tfstate"
+    region         = "ap-southeast-1"
+    dynamodb_table = "sandbox-terraformlab-s3"
+    encrypt        = true
   }
 }
 provider "aws" {
   # Configuration options
+  region = "ap-southeast-1"
 }
 
 resource "aws_s3_bucket" "labcontainer" {
