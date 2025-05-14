@@ -21,27 +21,34 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 # Resource Block
+resource "random_id" "randomness" {
+  byte_length = 9
+}
+
 resource "aws_s3_bucket" "bucket" {
-  bucket = "my-tf-test-bucket-abw123"
+  bucket = "my-tf-test-bucket-abw123-${random_id.randomness.hex}"
   tags = {
     Name        = "My bucket"
     Environment = "demo_environment"
     Terraform   = "true" 
   }
-  }
-  resource "aws_security_group" "allow_tls" {
-    name        = "allow_tls"
-    description = "Allow TLS inbound traffic"
-    vpc_id      = aws_vpc.vpc.id
-    ingress {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  }
-  resource "aws_subnet" "websubnet" {
-    name = "demo"
-    subnet_id = aws_subnet.subnet_id
-    vpc_id = aws_vpc.vpc_id
 }
+
+resource "aws_s3_bucket_public_access_block" "allow_public_acls" {
+  
+  bucket = aws_s3_bucket.bucket.id
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_versioning" "versioning_configuration" {
+  bucket = aws_s3_bucket.bucket.id 
+ 
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+
