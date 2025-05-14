@@ -22,12 +22,12 @@ variable "vpc_cidr" {
 variable "private_cidr" {
   description = "default private cidr block defined"
   type        = string
-  default     = "10.10.10.0/24"
+  default     = "10.10.100.0/24"
 }
 variable "public_cidr" {
   description = "default public cidr block defined"
   type        = string
-  default     = "10.10.10.0/24"
+  default     = "10.10.20.0/24"
 }
 variable "web_cidr" {
   description = "default web cidr block defined"
