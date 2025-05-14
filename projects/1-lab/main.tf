@@ -1,7 +1,6 @@
-# Provider config
+#Provider block
 provider "aws" {
-  # Configuration options
-  region = "ap-southeast-1"
+  region = ap-southeast-1
 }
 #Retrieve the list of AZs in the current AWS region
 data "aws_availability_zones" "available" {}

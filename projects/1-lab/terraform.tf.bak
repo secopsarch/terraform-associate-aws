@@ -1,0 +1,23 @@
+# Terraform Block
+providers {
+  aws = {
+    source  = "hashicorp/aws"
+    version = "> 3.0"
+  }
+  random = {
+    source  = "hashicorp/random"
+    version = ">= 3.0"
+  }
+  null = {
+    source  = "hashicorp/null"
+    version = ">= 3.0"
+  }
+}
+backend "s3" {
+  bucket         = "awslab-s3-arunbw"
+  key            = "env/dev/lab-1.tfstate"
+  region         = "ap-southeast-1"
+  dynamodb_table = "sandbox-terraformlab-s3"
+  encrypt        = true
+}
+
