@@ -1,30 +1,3 @@
-# Terraform Block
-terraform {
-  required_version = ">= 1.0.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.0"
-    }
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.0"
-    }
-  }
-  backend "s3" {
-    bucket = "awslab-s3-arunbw"
-    key    = "env/lab/terraform.tfstate"
-    region = "ap-southeast-1"
-  }
-}
-provider "aws" {
-  region = var.aws_region
-
-}
 locals {
   server_name = "websubnet-${var.env}"
   vpc_name    = "mydemovpc-${var.env}"
@@ -79,6 +52,16 @@ resource "aws_subnet" "web_subnet" {
   tags = {
     Name = local.server_name
   }
+}
+
+resource "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+}
+
+resource "local_file" "ssh_private_key" {
+  content = tls_private_key.ssh_key.private_key_pem
+  filename = "labsshkey.pem"
+
 }
 resource "aws_spot_instance_request" "webserver" {
   ami           = data.aws_ami.websever.id
