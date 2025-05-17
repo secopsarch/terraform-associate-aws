@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -14,18 +14,14 @@ terraform {
       source  = "hashicorp/null"
       version = "= 3.1.1"
     }
-    tls = {
-      source  = "hashicorp/tls"
-      version = ">= 3.1.0"
-    }
   }
   backend "s3" {
     bucket = "awslab-s3-arunbw"
-    key    = "env/lab/terraform.tfstate"
+    key    = "env/lab/terraformlab.tfstate"
     region = "ap-southeast-1"
   }
 }
 provider "aws" {
-  region = var.aws_region
+  region = "ap-southeast-1"
 
 }
