@@ -2,6 +2,10 @@
 #   default = true
 # }
 
+locals {
+  name = var.resource_tags
+}
+
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -18,6 +22,9 @@ module "vpc" {
   tags = {
     Terraform   = "true"
     Environment = "dev"
+    Name        = var.resource_tags[0]
+
+
   }
 }
 
@@ -26,12 +33,13 @@ data "aws_ssm_parameter" "ami" {
 }
 
 resource "aws_instance" "lab_server" {
+  count                  = length(var.web)
   ami                    = data.aws_ssm_parameter.ami.value
-  instance_type          = "t3.micro"
+  instance_type          = var.instance_type["prod"]
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.demo_sg.id]
   tags = {
-    Name = "tf_lab"
+    Name = var.web[count.index]
   }
 }
 resource "aws_security_group" "demo_sg" {
