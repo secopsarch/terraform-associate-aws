@@ -10,11 +10,12 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "labdemo-vpc"
-  cidr = "192.168.0.0/16"
+  cidr = "10.16.0.0/16"
+
 
   azs             = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
-  private_subnets = ["192.168.1.0/24", "192.168.2.0/24", "192.168.3.0/24"]
-  public_subnets  = ["192.168.101.0/24", "192.168.102.0/24", "192.168.103.0/24"]
+  private_subnets = ["10.16.1.0/24", "10.16.2.0/24", "10.16.3.0/24"]
+  public_subnets  = ["10.16.120.0/28", "10.16.150.0/28", "10.16.200.0/28"]
 
   enable_nat_gateway = true
   enable_vpn_gateway = true
@@ -22,7 +23,7 @@ module "vpc" {
   tags = {
     Terraform   = "true"
     Environment = "dev"
-    Name        = var.resource_tags[0]
+    Name        = var.resource_tags[2]
 
 
   }
