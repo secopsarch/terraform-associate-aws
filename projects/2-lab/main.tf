@@ -8,6 +8,7 @@ resource "random_id" "randomness" {
 }
 
 resource "aws_s3_bucket" "bucket" {
+  count = 3
   bucket = "my-tf-test-bucket-abw123-${random_id.randomness.hex}"
   tags   = merge(local.name, { workspace = terraform.workspace })
 }
